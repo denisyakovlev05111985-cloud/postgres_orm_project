@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>День программиста</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        h1 { color: #2e7d32; }
+        .date-box {
+            font-size: 1.5em;
+            padding: 15px;
+            background: #f1f8e9;
+            border: 1px solid #c8e6c9;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <h1>День программиста в {{ year }}</h1>
+    <p>256‑й день года — это:</p>
+    <div class="date-box">{{ programmers_day|date:"d M Y" }}</div>
+    {% if is_today %}
+        <p style="color: #d81b60; font-weight: bold;">🎉 Сегодня День программиста!</p>
+    {% endif %}
+</body>
+</html>

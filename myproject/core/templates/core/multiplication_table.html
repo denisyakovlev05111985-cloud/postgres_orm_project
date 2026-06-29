@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Таблица умножения</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        h1 { margin-bottom: 15px; }
+        table { border-collapse: collapse; }
+        th, td { border: 1px solid #ccc; padding: 6px 10px; text-align: center; }
+        th { background: #f0f0f0; }
+        .header-row { font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Таблица умножения (1–10)</h1>
+    <table>
+        <thead>
+            <tr class="header-row">
+                <th>×</th>
+                {% for i in range_1_10 %}
+                    <th>{{ i }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in table_rows %}
+                <tr>
+                    <td class="header-row">{{ row.multiplier }}</td>
+                    {% for value in row.values %}
+                        <td>{{ value }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
