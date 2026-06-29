@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }} — Новочебоксарск</title>
+</head>
+<body>
+    <!-- Главное меню -->
+    <nav style="margin-bottom: 1rem; padding: 0.5rem; border-bottom: 1px solid #ccc;">
+        <a href="{% url 'home' %}">Главная</a> |
+        <a href="{% url 'news' %}">Новости</a> |
+        <a href="{% url 'management' %}">Руководство</a> |
+        <a href="{% url 'facts' %}">Факты</a> |
+        <a href="{% url 'contacts' %}">Контакты</a> |
+        <a href="{% url 'history' %}">История</a>
+    </nav>
+
+    <!-- Хлебные крошки -->
+    {% block breadcrumbs %}
+    <div style="font-size: 0.9rem; color: #666; margin-bottom: 1rem;">
+        <a href="{% url 'home' %}">Главная</a>
+
+        {% if is_history_main %}
+            &raquo; <strong>История города</strong>
+        {% elif is_history_people %}
+            &raquo; <a href="{% url 'history' %}">История города</a> &raquo; <strong>Известные жители</strong>
+        {% elif is_history_photos %}
+            &raquo; <a href="{% url 'history' %}">История города</a> &raquo; <strong>Исторические фото</strong>
+        {% elif request.resolver_match.view_name == 'news' %}
+            &raquo; <strong>Новости города</strong>
+        {% elif request.resolver_match.view_name == 'management' %}
+            &raquo; <strong>Руководство города</strong>
+        {% elif request.resolver_match.view_name == 'facts' %}
+            &raquo; <strong>Факты о городе</strong>
+        {% elif request.resolver_match.view_name == 'contacts' %}
+            &raquo; <strong>Контакты</strong>
+        {% endif %}
+    </div>
+    {% endblock %}
+
+    <h1>{{ title }}</h1>
+
+    {% block content %}{% endblock %}
+
+    {% block other_sections %}
+    <hr style="margin: 2rem 0;">
+    <p>Другие разделы сайта:</p>
+    <ul>
+        <li><a href="{% url 'news' %}">Новости города</a></li>
+        <li><a href="{% url 'management' %}">Руководство города</a></li>
+        <li><a href="{% url 'facts' %}">Факты о городе</a></li>
+        <li><a href="{% url 'contacts' %}">Контактные телефоны</a></li>
+        <li><a href="{% url 'history' %}">История города</a></li>
+    </ul>
+    {% endblock %}
+</body>
+</html>
