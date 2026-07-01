@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Строчка из песни ({{ lang_name }}){% endblock %}
+
+{% block content %}
+    <h1>Строчка из песни</h1>
+    <p><strong>Язык:</strong> {{ lang_name }}</p>
+    <blockquote>
+        <p style="font-size: 1.2rem; font-weight: bold;">{{ line }}</p>
+        <cite>{{ author }}</cite>
+    </blockquote>
+
+    <nav>
+        <a href="{% url 'song_en' %}">English</a> |
+        <a href="{% url 'song_fr' %}">Français</a> |
+        <a href="{% url 'song_de' %}">Deutsch</a> |
+        <a href="{% url 'song_es' %}">Español</a>
+    </nav>
+{% endblock %}
