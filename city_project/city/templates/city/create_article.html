@@ -1,0 +1,15 @@
+{% extends "city/base.html" %}
+
+{% block content %}
+  <h1>{{ title }}</h1>
+  <form method="post">
+    {% csrf_token %}
+    <label>Заголовок:<br>
+      <input type="text" name="title" style="width:100%; padding:8px;" required>
+    </label><br><br>
+    <label>Текст статьи:<br>
+      <textarea name="content" rows="10" style="width:100%; padding:8px;" required></textarea>
+    </label><br><br>
+    <button type="submit">Опубликовать</button>
+  </form>
+{% endblock %}
