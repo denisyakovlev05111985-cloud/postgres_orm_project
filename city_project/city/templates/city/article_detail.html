@@ -1,0 +1,8 @@
+{% extends "city/base.html" %}
+
+{% block content %}
+  <h1>{{ article.title }}</h1>
+  <p><small>Автор: {{ article.author.username }} | Дата: {{ article.created_at }} | Просмотров: {{ article.views_count }}</small></p>
+  <hr>
+  <div>{{ article.content|linebreaks }}</div>
+{% endblock %}

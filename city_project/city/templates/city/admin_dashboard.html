@@ -1,0 +1,102 @@
+{% extends "city/base.html" %}
+
+{% block content %}
+  <h1>{{ title }}</h1>
+
+  <!-- Настройки оформления -->
+  <section style="margin-bottom: 2rem; border: 1px solid #ccc; padding: 1rem;">
+    <h2>Настройки оформления сайта</h2>
+    <form action="{% url 'update_site_settings' %}" method="post">
+      {% csrf_token %}
+      <label>Цвет фона: <input type="color" name="background_color" value="{{ settings.background_color }}"></label><br><br>
+      <label>Цвет текста: <input type="color" name="font_color" value="{{ settings.font_color }}"></label><br><br>
+      <label>Размер шрифта (px): <input type="number" name="font_size_px" value="{{ settings.font_size_px }}"></label><br><br>
+      <button type="submit">Сохранить настройки</button>
+    </form>
+  </section>
+
+  <!-- Статистика статей -->
+  <section style="margin-bottom: 2rem;">
+    <h2>Топ статей</h2>
+    <h3>По просмотрам</h3>
+    <ul>
+      {% for article in stats_views %}
+        <li>{{ article.title }} — {{ article.views_count }} просмотров</li>
+      {% empty %}
+        <li>Нет данных</li>
+      {% endfor %}
+    </ul>
+
+    <h3>По комментариям</h3>
+    <ul>
+      {% for article in stats_comments %}
+        <li>{{ article.title }} — {{ article.comments_count }} комментариев</li>
+      {% empty %}
+        <li>Нет данных</li>
+      {% endfor %}
+    </ul>
+
+    <h3>По сохранениям</h3>
+    <ul>
+      {% for article in stats_saves %}
+        <li>{{ article.title }} — {{ article.saves_count }} сохранений</li>
+      {% empty %}
+        <li>Нет данных</li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <!-- Список пользователей и бан -->
+  <section>
+    <h2>Пользователи (управление баном)</h2>
+    <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse;">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Админ</th>
+          <th>Забанен</th>
+          <th>До (если временно)</th>
+          <th>Причина бана</th>
+          <th>Действия</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+          <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.is_admin|yesno:"Да,Нет" }}</td>
+            <td>{{ user.is_banned|yesno:"Да,Нет" }}</td>
+            <td>{% if user.banned_until %}{{ user.banned_until }}{% else %}Навсегда{% endif %}</td>
+            <td>{{ user.ban_reason or '-' }}</td>
+            <td>
+              {% if user.is_banned %}
+                <form action="{% url 'unban_user' user.id %}" method="post" style="display:inline;">
+                  {% csrf_token %}
+                  <button type="submit">Разбанить</button>
+                </form>
+              {% else %}
+                <form action="{% url 'ban_user' user.id %}" method="post" style="display:inline;">
+                  {% csrf_token %}
+                  <select name="duration">
+                    <option value="day">1 день</option>
+                    <option value="week">1 неделя</option>
+                    <option value="month">1 месяц</option>
+                    <option value="forever">Навсегда</option>
+                  </select>
+                  <input type="text" name="reason" placeholder="Причина">
+                  <button type="submit">Забанить</button>
+                </form>
+              {% endif %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="8">Пользователей нет</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+{% endblock %}
